@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-app
+spec:
+  selector:
+    matchLabels:
+      app: go-app
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+     
+  template:
+    metadata:
+      labels:
+        app: go-app
+    spec:
+      imagePullSecrets:
+        - name: doccred
+      containers:
+      - name: go-app
+        image: rozikovp/go-sample:v1
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /app
+            name: config-volume
+        envFrom:
+        - configMapRef:
+            name: mayconfig     
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+      volumes:
+      - name: config-volume
+        configMap:
+          name: game-config

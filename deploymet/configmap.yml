@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mayconfig
+data:
+  logLevel: info
+  key2: value2
